@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Napkin check — the AI business case CTAIO’s calculator blends into one number</title>
+<meta name="description" content="Puts the inflated AI business case next to a full-cost version: adoption, captured hours, inference, governance, and change management. Built against the CTAIO enterprise AI ROI guide.">
+<style>
+  :root {
+    --paper: #efe6d6;
+    --ink: #1c1712;
+    --muted: #6e655b;
+    --line: #d4c6b0;
+    --napkin: #f7f1e4;
+    --cfo: #1c1712;
+    --cfo-ink: #f6efe4;
+    --kill: #8d1d2c;
+    --pass: #1d6b45;
+    --warn: #8a5a12;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    color: var(--ink);
+    font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+  main { max-width: 1040px; margin: 0 auto; padding: 32px 20px 64px; }
+  .kicker {
+    margin: 0 0 8px;
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  h1 { font-size: 40px; line-height: 1.05; font-weight: 600; margin: 0 0 12px; letter-spacing: -0.02em; }
+  .lede { max-width: 68ch; margin: 0 0 20px; }
+  a { color: inherit; }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+  button {
+    font: inherit;
+    cursor: pointer;
+    border: 1px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    padding: 6px 12px;
+  }
+  button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 22px; align-items: start; }
+  fieldset { border: 0; margin: 18px 0 0; padding: 0; min-width: 0; }
+  fieldset:first-of-type { margin-top: 0; }
+  .layout, .row, .panel, .panels { min-width: 0; }
+  legend { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace; margin-bottom: 8px; }
+  .row { display: grid; grid-template-columns: 1fr 128px; gap: 12px; align-items: baseline; border-top: 1px solid var(--line); padding: 8px 0; }
+  label { font-size: 16px; }
+  .hint { display: block; color: var(--muted); font-size: 13px; margin-top: 2px; }
+  input[type="number"] {
+    width: 100%;
+    font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+    font-size: 16px;
+    padding: 6px 8px;
+    border: 1px solid var(--ink);
+    background: #fffdf8;
+    color: var(--ink);
+  }
+  .warn { color: var(--kill); font-size: 13px; margin: 6px 0 0; }
+  .panels { display: grid; gap: 10px; }
+  .panel { padding: 16px 16px 14px; }
+  .panel h2 { margin: 0 0 4px; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace; font-weight: 500; }
+  .panel p { margin: 0 0 12px; font-size: 15px; }
+  .napkin { background: var(--napkin); color: var(--muted); border: 1px solid var(--line); }
+  .cfo { background: var(--cfo); color: var(--cfo-ink); }
+  .cfo p { color: #e4d8c6; }
+  dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; }
+  dt { margin: 0; }
+  dd { margin: 0; font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace; text-align: right; }
+  .big { font-size: 22px; }
+  .stamp { margin: 14px 0 0; font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace; font-size: 13px; letter-spacing: 0; line-height: 1.4; }
+  .kill { color: #ffb4bc; }
+  .pass { color: #b7ebc9; }
+  .mid { color: #f0d7a1; }
+  .math { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 14px; color: var(--muted); font-size: 15px; }
+  .math code { font-family: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace; font-size: 13px; color: var(--ink); }
+  @media (max-width: 800px) {
+    h1 { font-size: 32px; }
+    .layout, .row { grid-template-columns: 1fr; }
+    input[type="number"] { max-width: 160px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <p class="kicker">Companion to ctaio.dev/en/ai-roi</p>
+  <h1>The napkin says yes. Run the costs they leave out.</h1>
+  <p class="lede">CTAIO’s ROI guide says license fees are 10–20% of a real AI program, adoption stalls, and saved hours are not captured one for one. Their calculator applies those haircuts inside a single result, so the inflated case disappears. This sheet keeps it on the left.</p>
+  <div class="presets" role="group" aria-label="Presets">
+    <button type="button" id="preset-stalled" aria-pressed="true">Stalled rollout</button>
+    <button type="button" id="preset-eng" aria-pressed="false">Engaged developers</button>
+  </div>
+  <div class="layout">
+    <form id="sheet">
+      <fieldset>
+        <legend>What the pilot spreadsheet has</legend>
+        <div class="row"><label for="users">People you will license<span class="hint">Seats you pay for, not seats that stick</span></label><input id="users" type="number" min="0" step="1" value="200"></div>
+        <div class="row"><label for="license">Annual license per person, USD<span class="hint">The line that usually makes the whole case</span></label><input id="license" type="number" min="0" step="10" value="360"></div>
+        <div class="row"><label for="hours">Hours saved per person per week<span class="hint">The pilot’s claim, before anyone argues with it</span></label><input id="hours" type="number" min="0" step="0.5" value="5"></div>
+        <div class="row"><label for="rate">Fully loaded hourly cost, USD</label><input id="rate" type="number" min="0" step="5" value="90"></div>
+      </fieldset>
+      <fieldset>
+        <legend>What the guide says to add</legend>
+        <div class="row"><label for="adoption">Adoption you will still have, percent<span class="hint">Their failure story uses 25. Their calculator defaults to 60.</span></label><input id="adoption" type="number" min="0" max="100" step="1" value="25"></div>
+        <p class="warn" id="adoption-warn" hidden></p>
+        <div class="row"><label for="capture">Saved hours the org actually keeps, percent<span class="hint">Faster typing is not more product shipped. Default on their tool is 50.</span></label><input id="capture" type="number" min="0" max="100" step="1" value="50"></div>
+        <p class="warn" id="capture-warn" hidden></p>
+        <div class="row"><label for="inference">Production inference, as a multiple of the license bill<span class="hint">Their guide: pilots miss this by about 10×. Set 1 if the seat price already includes it.</span></label><input id="inference" type="number" min="0" step="0.1" value="10"></div>
+        <div class="row"><label for="build">One-time engineering and integration, USD</label><input id="build" type="number" min="0" step="1000" value="400000"></div>
+        <div class="row"><label for="gov">Governance and security per year, USD</label><input id="gov" type="number" min="0" step="1000" value="40000"></div>
+        <div class="row"><label for="change">Change management per year, USD<span class="hint">The line their guide says gets cut first</span></label><input id="change" type="number" min="0" step="1000" value="20000"></div>
+      </fieldset>
+    </form>
+    <div class="panels">
+      <section class="panel napkin" aria-live="polite">
+        <h2>Napkin</h2>
+        <p>Every licensed person, every claimed hour, license fee only. No build, no inference, no governance, no adoption drop.</p>
+        <dl>
+          <dt>Annual benefit</dt><dd id="n-benefit">—</dd>
+          <dt>Annual cost</dt><dd id="n-cost">—</dd>
+          <dt class="big">Return on the license</dt><dd class="big" id="n-roi">—</dd>
+          <dt>That return ÷ 3</dt><dd id="n-rule">—</dd>
+        </dl>
+      </section>
+      <section class="panel cfo" aria-live="polite">
+        <h2>After the haircut</h2>
+        <p id="c-blurb">Benefit only on people who still use it, and only on the hours the org keeps. Cost includes inference, governance, change, and the build.</p>
+        <dl>
+          <dt>Captured benefit / year</dt><dd id="c-benefit">—</dd>
+          <dt>License</dt><dd id="c-license">—</dd>
+          <dt>Inference</dt><dd id="c-inference">—</dd>
+          <dt>Governance + change</dt><dd id="c-people">—</dd>
+          <dt>Annual operating cost</dt><dd id="c-ops">—</dd>
+          <dt>Annual surplus</dt><dd id="c-surplus">—</dd>
+          <dt class="big">3-year ROI</dt><dd class="big" id="c-roi">—</dd>
+          <dt class="big">Payback</dt><dd class="big" id="c-payback">—</dd>
+        </dl>
+        <p class="stamp" id="stamp"></p>
+      </section>
+    </div>
+  </div>
+  <section class="math">
+    <p id="plugged"></p>
+    <p>48 working weeks, same year length as <a href="https://ctaio.dev/en/ai-roi/calculator/">their calculator</a>. 3-year ROI is (3 × annual surplus − build) / (3 × operating cost + build). Payback is build / annual surplus, in months. The ÷3 line is the rule of thumb in <a href="https://ctaio.dev/en/ai-roi/">their ROI guide</a>. It is not the model.</p>
+  </section>
+</main>
+<script>
+function compute(input) {
+  var weeks = 48;
+  var license = input.users * input.licensePerUser;
+  var napkinBenefit = input.users * input.hoursPerWeek * weeks * input.hourly;
+  var napkinNet = napkinBenefit - license;
+  var napkinRoi = license > 0 ? napkinNet / license : 0;
+
+  var active = input.users * (input.adoptionPct / 100);
+  var benefit = active * input.hoursPerWeek * weeks * input.hourly * (input.capturePct / 100);
+  var inference = license * input.inferenceMultiple;
+  var peopleCost = input.governance + input.change;
+  var operating = license + inference + peopleCost;
+  var surplus = benefit - operating;
+  var threeYearNet = surplus * 3 - input.build;
+  var threeYearCost = operating * 3 + input.build;
+  var roi = threeYearCost > 0 ? threeYearNet / threeYearCost : 0;
+  var paybackMonths = surplus > 0 ? (input.build / surplus) * 12 : null;
+
+  return {
+    license: license,
+    napkinBenefit: napkinBenefit,
+    napkinRoi: napkinRoi,
+    ruleOfThumb: napkinRoi / 3,
+    active: active,
+    benefit: benefit,
+    inference: inference,
+    peopleCost: peopleCost,
+    operating: operating,
+    surplus: surplus,
+    roi: roi,
+    paybackMonths: paybackMonths
+  };
+}
+
+var PRESETS = {
+  stalled: { users: 200, license: 360, hours: 5, rate: 90, adoption: 25, capture: 50, inference: 10, build: 400000, gov: 40000, change: 20000 },
+  eng: { users: 40, license: 360, hours: 5, rate: 120, adoption: 80, capture: 60, inference: 1.5, build: 80000, gov: 10000, change: 15000 }
+};
+
+function money(n) {
+  var sign = n < 0 ? "−" : "";
+  return sign + "$" + Math.round(Math.abs(n)).toLocaleString("en-US");
+}
+function pct(n) {
+  return Math.round(n * 100) + "%";
+}
+function read() {
+  function num(id) { return parseFloat(document.getElementById(id).value) || 0; }
+  return {
+    users: num("users"),
+    licensePerUser: num("license"),
+    hoursPerWeek: num("hours"),
+    hourly: num("rate"),
+    adoptionPct: num("adoption"),
+    capturePct: num("capture"),
+    inferenceMultiple: num("inference"),
+    build: num("build"),
+    governance: num("gov"),
+    change: num("change")
+  };
+}
+function flagPercent(id, warnId) {
+  var raw = document.getElementById(id).value.trim();
+  var n = parseFloat(raw);
+  var el = document.getElementById(warnId);
+  if (raw !== "" && n > 0 && n < 1) {
+    el.hidden = false;
+    el.textContent = "This field is percent. " + raw + " will be read as " + raw + "%, not " + Math.round(n * 100) + "%.";
+  } else {
+    el.hidden = true;
+  }
+}
+function render() {
+  flagPercent("adoption", "adoption-warn");
+  flagPercent("capture", "capture-warn");
+  var input = read();
+  var r = compute(input);
+  document.getElementById("n-benefit").textContent = money(r.napkinBenefit);
+  document.getElementById("n-cost").textContent = money(r.license);
+  document.getElementById("n-roi").textContent = pct(r.napkinRoi);
+  document.getElementById("n-rule").textContent = pct(r.ruleOfThumb);
+  document.getElementById("c-benefit").textContent = money(r.benefit);
+  document.getElementById("c-license").textContent = money(r.license);
+  document.getElementById("c-inference").textContent = money(r.inference);
+  document.getElementById("c-people").textContent = money(r.peopleCost);
+  document.getElementById("c-ops").textContent = money(r.operating);
+  document.getElementById("c-surplus").textContent = money(r.surplus);
+  document.getElementById("c-roi").textContent = pct(r.roi);
+  var stamp = document.getElementById("stamp");
+  var pay = document.getElementById("c-payback");
+  stamp.className = "stamp";
+  if (r.surplus <= 0) {
+    pay.textContent = "never";
+    stamp.textContent = "KILL. Dividing the napkin by 3 still shows " + pct(r.ruleOfThumb) + ". A flat haircut cannot see " + input.adoptionPct + "% adoption or inference at " + input.inferenceMultiple + "× the license.";
+    stamp.classList.add("kill");
+  } else if (r.paybackMonths > 18) {
+    pay.textContent = Math.round(r.paybackMonths) + " months";
+    stamp.textContent = "FRAGILE. It pays back later than the 18-month line in the CTAIO guide.";
+    stamp.classList.add("mid");
+  } else if (r.paybackMonths > 12) {
+    pay.textContent = Math.round(r.paybackMonths) + " months";
+    stamp.textContent = "INSIDE 18 MONTHS. Put a kill date at month 6 if adoption is below the percent on this sheet.";
+    stamp.classList.add("mid");
+  } else {
+    pay.textContent = Math.round(r.paybackMonths) + " months";
+    stamp.textContent = "PAYS BACK inside a year. Take the right-hand column upstairs, not the left.";
+    stamp.classList.add("pass");
+  }
+  document.getElementById("plugged").innerHTML =
+    "With these inputs: " + r.active.toLocaleString("en-US") + " active people × " +
+    input.hoursPerWeek + " h × 48 wk × " + money(input.hourly) + " × " + input.capturePct +
+    "% = <code>" + money(r.benefit) + "</code> captured. License <code>" + money(r.license) +
+    "</code> + inference <code>" + money(r.inference) + "</code> + governance and change <code>" +
+    money(r.peopleCost) + "</code> = <code>" + money(r.operating) + "</code> a year.";
+}
+function applyPreset(key) {
+  var p = PRESETS[key];
+  document.getElementById("users").value = p.users;
+  document.getElementById("license").value = p.license;
+  document.getElementById("hours").value = p.hours;
+  document.getElementById("rate").value = p.rate;
+  document.getElementById("adoption").value = p.adoption;
+  document.getElementById("capture").value = p.capture;
+  document.getElementById("inference").value = p.inference;
+  document.getElementById("build").value = p.build;
+  document.getElementById("gov").value = p.gov;
+  document.getElementById("change").value = p.change;
+  document.getElementById("preset-stalled").setAttribute("aria-pressed", key === "stalled" ? "true" : "false");
+  document.getElementById("preset-eng").setAttribute("aria-pressed", key === "eng" ? "true" : "false");
+  render();
+}
+document.getElementById("sheet").addEventListener("input", function () {
+  document.getElementById("preset-stalled").setAttribute("aria-pressed", "false");
+  document.getElementById("preset-eng").setAttribute("aria-pressed", "false");
+  render();
+});
+document.getElementById("preset-stalled").addEventListener("click", function () { applyPreset("stalled"); });
+document.getElementById("preset-eng").addEventListener("click", function () { applyPreset("eng"); });
+if (new URLSearchParams(location.search).get("preset") === "eng") applyPreset("eng");
+else render();
+</script>
+</body>
+</html>
